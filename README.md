@@ -39,13 +39,62 @@ Get a Linkup key at **https://app.linkup.so**.
 
 ## Three reference agents
 
-Each is a small, real, end-to-end example of one core pattern. Copy one and adapt.
+Each is a small, real, end-to-end example of one core Linkup pattern. They're not
+toys — they run start to finish — but they're deliberately compact so you can read
+one in a sitting, then copy it and adapt. Across all three the rule is the same:
+**Linkup supplies the facts, the LLM only reasons and writes.**
 
 | Agent | Pattern | What it does |
 |-------|---------|--------------|
-| [`agents/lead_research`](./agents/lead_research) | **Chained `/search`** | Company → people → personalized outreach note |
-| [`agents/meeting_prep`](./agents/meeting_prep) | **External connections** | Calendar + CRM → per-attendee research → prep brief |
-| [`agents/seo_content`](./agents/seo_content) | **`/fetch` + `/research`** | Your site + competitors → researched, written article → Notion |
+| [`lead_research`](./agents/lead_research) | **Chained `/search`** | Company → people → personalized outreach note |
+| [`meeting_prep`](./agents/meeting_prep) | **External connections** | Calendar + CRM → per-attendee research → prep brief |
+| [`seo_content`](./agents/seo_content) | **`/fetch` + `/research`** | Your site + competitors → researched, written article → Notion |
+
+### 1. `lead_research` — chained `/search`
+
+Turns a seed (a company name **or** a discovery query like *"seed-stage devtools
+startups that raised recently"*) into a researched lead and a short, personalized
+outreach note. Each Linkup call grounds the next: discover companies → research the
+company (overview + funding signal, two `standard` searches in **parallel**) → pull
+decision-makers as structured `name/title/url` → research the top person → LLM drafts
+the note from those findings only. Shows how to mix **parallel** searches for
+independent lookups with **chaining** for dependent ones, and `structured` output
+when you need clean fields instead of prose.
+
+```bash
+python -m agents.lead_research.run --company "Linkup"
+python -m agents.lead_research.run --discover "seed-stage devtools startups that raised recently"
+```
+
+### 2. `meeting_prep` — external connections + Linkup
+
+Generates a one-page prep brief for each upcoming meeting. Your **connected systems**
+say who and when (calendar for events, CRM for title/company and your *last touch*);
+**Linkup** supplies the live public truth — two parallel `/search` calls per external
+attendee (recent activity + what changed at their company since you last spoke), plus
+an optional `/fetch` to pull the full text of their most relevant post; the **LLM**
+writes the brief with every claim cited back to a source URL. The connectors are
+swappable stubs with a sample fallback, so it runs end to end with no calendar/CRM
+credentials.
+
+```bash
+python -m agents.meeting_prep.run --days 7
+```
+
+### 3. `seo_content` — `/fetch` + `/research`
+
+Turns *"here's my page, my competitors, and a keyword"* into a full, **cited** SEO
+article. It uses the fast deterministic endpoint when it already has URLs and the
+heavy autonomous one when the question is open: `/fetch` your site + competitors in
+parallel → LLM names the content gap → `/research` the keyword into a cited brief →
+LLM writes title/meta/body grounded in that brief → publish to Notion (or fall back
+to a local `output/` file). Shows when to reach for `/research` over `/search`.
+
+```bash
+python -m agents.seo_content.run --url https://linkup.so \
+    --competitors https://exa.ai https://tavily.com \
+    --keyword "web search API for AI agents"
+```
 
 ## What's in the box
 
