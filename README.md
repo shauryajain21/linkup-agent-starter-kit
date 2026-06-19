@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/linkup-logo-white.png">
+    <img alt="Linkup" src="./assets/linkup-logo-black.png" width="280">
+  </picture>
+</p>
+
 # Linkup Agent Starter Kit
 
 > Build production AI agents on the live web. **Linkup is the engine** — real-time
