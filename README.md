@@ -5,7 +5,7 @@
   </picture>
 </p>
 
-# Linkup Agent Starter Kit
+# Agent Starter Kit
 
 > Build production AI agents on the live web. **Linkup is the engine** — real-time
 > search, clean page extraction, and autonomous research — and your LLM is the
