@@ -8,10 +8,9 @@
 Hand this repo to your coding agent (Claude Code, Cursor, etc.) and start building.
 It will read [`CLAUDE.md`](./CLAUDE.md) and already know how to use Linkup well.
 
-## Why Linkup is the engine
+## Linkup Endpoints for agents 
 
-LLMs are frozen at their training cutoff and hallucinate about the present. An agent
-is only as good as the facts it acts on. Linkup is the layer that gives an agent
+An agent is only as good as the facts it acts on. Linkup is the layer that gives an agent
 **current, sourced reality**:
 
 - **`/search`** — agentic web search in one call. `fast` (sub-second), `standard`
@@ -20,8 +19,6 @@ is only as good as the facts it acts on. Linkup is the layer that gives an agent
 - **`/research`** — an autonomous agent that runs for minutes and returns a synthesized,
   **cited** report.
 - **`/tasks`** — batch up to 100 of the above for bulk/scheduled jobs.
-
-One small client (`linkup_engine/client.py`, ~zero magic, just REST) is all four.
 
 ## Quickstart
 
@@ -60,7 +57,7 @@ Each is a small, real, end-to-end example of one core pattern. Copy one and adap
   and an **exhaustive menu of providers** (LLMs, CRMs, email, calendars, destinations,
   frameworks) you can build on top.
 
-## Make it yours
+## Build it your way
 
 - **Pick your LLM**: `LLM_PROVIDER=anthropic` (default) or `openai`; add any other in
   `linkup_engine/llm.py`. See [`docs/06-providers.md`](./docs/06-providers.md).
