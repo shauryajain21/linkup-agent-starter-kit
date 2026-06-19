@@ -8,12 +8,6 @@
 Hand this repo to your coding agent (Claude Code, Cursor, etc.) and start building.
 It will read [`CLAUDE.md`](./CLAUDE.md) and already know how to use Linkup well.
 
-```
-        ┌──────────────────────── your agent ────────────────────────┐
-  trigger ─▶  LLM plans  ─▶  LINKUP (search · fetch · research)  ─▶  LLM writes  ─▶  destination
-                              the engine: fresh, grounded web facts      Notion · CRM · Slack · email
-```
-
 ## Why Linkup is the engine
 
 LLMs are frozen at their training cutoff and hallucinate about the present. An agent
