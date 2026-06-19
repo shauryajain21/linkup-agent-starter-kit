@@ -61,6 +61,22 @@ the note from those findings only. Shows how to mix **parallel** searches for
 independent lookups with **chaining** for dependent ones, and `structured` output
 when you need clean fields instead of prose.
 
+```mermaid
+flowchart LR
+    A(["Seed: company name<br/>or discovery query"]) --> B{"Discovery<br/>query?"}
+    B -- yes --> C["Linkup /search structured<br/>find candidate companies"]
+    B -- no --> D
+    C --> D["Linkup /search ×2 parallel<br/>company overview + funding signal"]
+    D --> E["Linkup /search structured<br/>find decision-makers"]
+    E --> F["Linkup /search<br/>top person background"]
+    F --> G[["LLM: draft outreach note<br/>grounded in findings only"]]
+    G --> H(["Personalized note + sources"])
+    classDef linkup fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+    classDef llm fill:#dcfce7,stroke:#16a34a,color:#14532d;
+    class C,D,E,F linkup;
+    class G llm;
+```
+
 ```bash
 python -m agents.lead_research.run --company "Linkup"
 python -m agents.lead_research.run --discover "seed-stage devtools startups that raised recently"
@@ -77,6 +93,22 @@ writes the brief with every claim cited back to a source URL. The connectors are
 swappable stubs with a sample fallback, so it runs end to end with no calendar/CRM
 credentials.
 
+```mermaid
+flowchart LR
+    A(["Trigger: upcoming meetings"]) --> B["Calendar connector<br/>events + attendees"]
+    B --> C["CRM connector<br/>title, company, last touch"]
+    C --> D["Linkup /search ×2 parallel<br/>recent activity + company changes"]
+    D --> E["Linkup /fetch optional<br/>full text of top post"]
+    E --> F[["LLM: one-page prep brief<br/>every claim cited"]]
+    F --> G(["Brief per meeting"])
+    classDef linkup fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+    classDef conn fill:#fef9c3,stroke:#ca8a04,color:#713f12;
+    classDef llm fill:#dcfce7,stroke:#16a34a,color:#14532d;
+    class B,C conn;
+    class D,E linkup;
+    class F llm;
+```
+
 ```bash
 python -m agents.meeting_prep.run --days 7
 ```
@@ -89,6 +121,22 @@ heavy autonomous one when the question is open: `/fetch` your site + competitors
 parallel → LLM names the content gap → `/research` the keyword into a cited brief →
 LLM writes title/meta/body grounded in that brief → publish to Notion (or fall back
 to a local `output/` file). Shows when to reach for `/research` over `/search`.
+
+```mermaid
+flowchart LR
+    A(["Inputs: your URL,<br/>competitor URLs, keyword"]) --> B["Linkup /fetch parallel<br/>your site + competitors"]
+    B --> C[["LLM: find content gap / angle"]]
+    C --> D["Linkup /research<br/>cited topic brief"]
+    D --> E[["LLM: write article<br/>title, meta, body + citations"]]
+    E --> F["Destination connector<br/>Notion or local file"]
+    F --> G(["Published article"])
+    classDef linkup fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+    classDef conn fill:#fef9c3,stroke:#ca8a04,color:#713f12;
+    classDef llm fill:#dcfce7,stroke:#16a34a,color:#14532d;
+    class B,D linkup;
+    class C,E llm;
+    class F conn;
+```
 
 ```bash
 python -m agents.seo_content.run --url https://linkup.so \
